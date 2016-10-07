@@ -8,3 +8,4 @@ Developed using a Hyper-V VM running:
         nodejs v4.4.7
         ethereum-testrpc v2.1.0
         solc 0.3.5-0
+# Knoledge
