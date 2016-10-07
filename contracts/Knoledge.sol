@@ -1,6 +1,5 @@
 import "Owned.sol";
 
-
 contract Knoledge is Owned  {
 	string public version = "1.0";
     string public name;
@@ -49,13 +48,12 @@ contract Knoledge is Owned  {
 		root_item = record.root_item;
 	}	
 
-	function addItem( string _key, string _value) returns (bool success) {
-		if (recordOwners[msg.sender] == 0) {
-			success = false;
-		}
-		else{
-			success = true;
-		}
+	function addItem( string _key, string _value) {
+		/* if (recordOwners[msg.sender] == 0) {
+			throw;
+		} */
+
+		RegisterChange(msg.sender, 1, 1);
 	}
 
 	/* this unnamed function is called whenever someone tries to send ether to the contract */

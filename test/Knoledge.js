@@ -34,23 +34,27 @@ contract('Knoledge', function(accounts) {
   });
   it("should get empty string from getItem with empty registry", function() {
     var knol = Knoledge.deployed();
-    return knol.getItem(0, 0).then(function(array){
+    return knol.getItem.call(0, 0).then(function(array){
       console.log("key: " + array[0]);
       assert.equal(array[0], "", "unexpected data returned");
     });
   });
   it("should get 0x00 address from getRecord with empty registry", function() {
     var knol = Knoledge.deployed();
-    return knol.getRecord(0, 0).then(function(array){
+    return knol.getRecord.call(0, 0).then(function(array){
       console.log("owner: " + array[0]);
       assert.equal(array[0], 0x0 , "unexpected data returned");
     });
   });
-  it("should get 0x00 address from getRecord with empty registry", function() {
+  // TODO work out how to test emit event
+  it("should emit event for addItem()", function(done) {
     var knol = Knoledge.deployed();
-    return knol.addItem("item", "value").then(function(success){
-      console.log("success: " + success);
-      assert.equal(success, true , "unexpected data returned");
-    });
+    var watcher = knol.RegisterChange();
+    knol.addItem("item", "value").then(function(){
+      return watcher.get();
+    }).then(function(events) {
+        console.log("events:" + events);
+        assert.equal(events.length, 1);
+    }).then(done).catch(done);
   });
 });
