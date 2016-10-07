@@ -21,40 +21,37 @@ contract('Knoledge', function(accounts) {
       console.log("Account[0]: " + accounts[0]);
      	console.log("New owner: " + newOwner);
       assert.equal(newOwner, accounts[1],"Ownership was not changed correctly");
-    });
-  }); 
-  it("should only transfer ownership by owner", function() {
-    var knol = Knoledge.deployed();
-    knol.transferOwnership(accounts[3], {from: accounts[2]})
-    return knol.owner.call().then(function(newOwner){
-      console.log("Owner: " + newOwner);
-      assert.notEqual(newOwner, accounts[3],"Ownership was incorrectly chnaged by non-owner");
       return knol.transferOwnership(accounts[0], {from: accounts[1]});
     });
-  });
+  }); 
   it("should get empty string from getItem with empty registry", function() {
     var knol = Knoledge.deployed();
     return knol.getItem.call(0, 0).then(function(array){
-      console.log("key: " + array[0]);
+      console.log("GetItem: " + array[0]);
       assert.equal(array[0], "", "unexpected data returned");
     });
   });
   it("should get 0x00 address from getRecord with empty registry", function() {
     var knol = Knoledge.deployed();
     return knol.getRecord.call(0, 0).then(function(array){
-      console.log("owner: " + array[0]);
+      console.log("GetRecord: " + array[0]);
       assert.equal(array[0], 0x0 , "unexpected data returned");
     });
   });
-  // TODO work out how to test emit event
-  it("should emit event for addItem()", function(done) {
+ it("should emit event add fail (shows 1 emitted)", function(done) {
     var knol = Knoledge.deployed();
-    var watcher = knol.RegisterChange();
     knol.addItem("item", "value").then(function(){
-      return watcher.get();
-    }).then(function(events) {
-        console.log("events:" + events);
-        assert.equal(events.length, 1);
+      assert.isTrue(false);
     }).then(done).catch(done);
+  });
+  it("transferownership not called by owner throws", function(){
+    var thrown = false;
+    Knoledge.new().then(function(knol){
+      return knol.transferOwnership(accounts[3], {from: accounts[2]})
+      }).catch(function(error){
+        thrown = true;
+      }).then(function(){
+        assert.isTrue(thrown, "didn't throw as expected");
+    });
   });
 });

@@ -25,7 +25,7 @@ contract Knoledge is Owned  {
 	mapping (address => uint) recordOwners; 	//  quick lookup of who owns which records
 
 	event RegisterChange(address indexed sender, uint record, uint item);
-
+	event Called();
 	function Knoledge(string _name) {
 		name = _name;
 	}
@@ -52,8 +52,8 @@ contract Knoledge is Owned  {
 		/* if (recordOwners[msg.sender] == 0) {
 			throw;
 		} */
-
-		RegisterChange(msg.sender, 1, 1);
+		Called();
+		//RegisterChange(msg.sender, 1, 1);
 	}
 
 	/* this unnamed function is called whenever someone tries to send ether to the contract */
