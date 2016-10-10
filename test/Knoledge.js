@@ -38,12 +38,26 @@ contract('Knoledge', function(accounts) {
       assert.equal(array[0], 0x0 , "unexpected data returned");
     });
   });
- it("should emit event add fail (shows 1 emitted)", function(done) {
+   it("should return false from hasRecords() with no records", function() {
+    var knol = Knoledge.deployed();
+    return knol.hasRecords.call({from: accounts[9]}).then(function(has){
+      assert.isFalse(has , "didn't return false");
+    });
+  }); 
+    it("should return true from hasRecords() when addItem() is successful", function(done) {
+    var knol = Knoledge.deployed();
+    knol.addItem("item", "value").then(function(){
+    return knol.hasRecords.call().then(function(has){
+      assert.isTrue(has, "didn't return true");
+    });
+    }).then(done).catch(done);
+  }); 
+  it("should emit event and fail (shows 1 emitted)", function(done) {
     var knol = Knoledge.deployed();
     knol.addItem("item", "value").then(function(){
       assert.isTrue(false);
     }).then(done).catch(done);
-  });
+  }); 
   it("transferownership not called by owner throws", function(){
     var thrown = false;
     Knoledge.new().then(function(knol){
