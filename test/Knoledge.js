@@ -33,8 +33,8 @@ contract('Knoledge', function(accounts) {
   });
   it("should get 0x00 address from getRecord with empty registry", function() {
     var knol = Knoledge.deployed();
-    return knol.getRecord.call(0, 0).then(function(array){
-      console.log("GetRecord: " + array[0]);
+    return knol.getRecord.call(20).then(function(array){
+      console.log("GetRecord: " + array);
       assert.equal(array[0], 0x0 , "unexpected data returned");
     });
   });
@@ -44,7 +44,7 @@ contract('Knoledge', function(accounts) {
       assert.isFalse(has , "didn't return false");
     });
   }); 
-    it("should return true from hasRecords() when addItem() is successful", function(done) {
+  it("should return true from hasRecords() when addItem() is successful", function(done) {
     var knol = Knoledge.deployed();
     knol.addItem("item", "value").then(function(){
     return knol.hasRecords.call().then(function(has){
@@ -68,4 +68,19 @@ contract('Knoledge', function(accounts) {
         assert.isTrue(thrown, "didn't throw as expected");
     });
   });
+  it("should get address from getRecord", function() {
+    var knol = Knoledge.deployed();
+      return knol.getRecord.call(1).then(function(array){
+        console.log("GetRecord: " + array);
+        assert.equal(array[0], accounts[0] , "unexpected address returned");
+      });
+  });  
+  it("should get string from getItem", function() {
+    var knol = Knoledge.deployed();
+    return knol.getItem.call(1,1).then(function(array){
+      console.log("GetItem: " + array);
+      assert.equal(array[0], "item", "unexpected item returned");
+      assert.equal(array[1], "value", "unexpected value returned");
+    });
+  });  
 });
