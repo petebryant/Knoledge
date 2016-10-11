@@ -58,7 +58,7 @@ contract('Knoledge', function(accounts) {
       assert.isTrue(false);
     }).then(done).catch(done);
   }); 
-  it("transferownership not called by owner throws", function(){
+  it("should throw when transferownership not called by owner", function(){
     var thrown = false;
     Knoledge.new().then(function(knol){
       return knol.transferOwnership(accounts[3], {from: accounts[2]})
@@ -68,6 +68,26 @@ contract('Knoledge', function(accounts) {
         assert.isTrue(thrown, "didn't throw as expected");
     });
   });
+   it("should throw when addItem called with empty key", function(){
+    var thrown = false;
+    Knoledge.new().then(function(knol){
+      return knol.addItem("","value")
+      }).catch(function(error){
+        thrown = true;
+      }).then(function(){
+        assert.isTrue(thrown, "didn't throw as expected");
+    });
+  }); 
+   it("should throw when addItem called with empty value", function(){
+    var thrown = false;
+    Knoledge.new().then(function(knol){
+      return knol.addItem("key","")
+      }).catch(function(error){
+        thrown = true;
+      }).then(function(){
+        assert.isTrue(thrown, "didn't throw as expected");
+    });
+  });   
   it("should get address from getRecord", function() {
     var knol = Knoledge.deployed();
       return knol.getRecord.call(1).then(function(array){

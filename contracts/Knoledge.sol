@@ -1,4 +1,5 @@
 import "Owned.sol";
+import "StringUtils.sol";
 
 contract Knoledge is Owned  {
 	string public version = "1.0";
@@ -54,6 +55,9 @@ contract Knoledge is Owned  {
 	}	
 
 	function addItem( string _key, string _value) {
+		if (StringUtils.equal(_key,"")) throw;
+		if (StringUtils.equal(_value,"")) throw;
+
 		uint record = recordOwners[msg.sender];
 		uint item = 1;
 
