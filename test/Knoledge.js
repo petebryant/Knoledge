@@ -60,29 +60,35 @@ contract('Knoledge', function(accounts) {
   }); 
   it("should throw when transferownership not called by owner", function(){
     var thrown = false;
-    Knoledge.new().then(function(knol){
+    var knol = Knoledge.deployed();
+    knol.owner.call().then(function(owner){;
       return knol.transferOwnership(accounts[3], {from: accounts[2]})
       }).catch(function(error){
+        //console.log("Error:"  + error);
         thrown = true;
       }).then(function(){
         assert.isTrue(thrown, "didn't throw as expected");
     });
   });
-   it("should throw when addItem called with empty key", function(){
+  it("should throw when addItem called with empty key", function(){
     var thrown = false;
-    Knoledge.new().then(function(knol){
-      return knol.addItem("","value")
+    var knol = Knoledge.deployed();
+    knol.owner.call().then(function(owner){
+      return knol.addItem("","value");
       }).catch(function(error){
+        //console.log("Error:"  + error);
         thrown = true;
       }).then(function(){
         assert.isTrue(thrown, "didn't throw as expected");
     });
   }); 
-   it("should throw when addItem called with empty value", function(){
+  it("should throw when addItem called with empty value", function(){
     var thrown = false;
-    Knoledge.new().then(function(knol){
-      return knol.addItem("key","")
+    var knol = Knoledge.deployed();
+    knol.owner.call().then(function(owner){
+      return knol.addItem.call("key","");
       }).catch(function(error){
+       // console.log("Error:"  + error);
         thrown = true;
       }).then(function(){
         assert.isTrue(thrown, "didn't throw as expected");
