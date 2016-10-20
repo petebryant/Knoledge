@@ -54,6 +54,19 @@ contract Knoledge is Owned  {
 		next_record = record.next_record;
 	}	
 
+	function getOwnersRecord() constant returns 
+		(address owner, uint root_item, uint numb_items, uint next_record ) {
+		uint ownerRecord = recordOwners[msg.sender];
+
+		if (ownerRecord == 0) return;
+
+		Record record = register[ownerRecord];
+
+		owner = record.owner;
+		root_item = record.root_item;
+		next_record = record.next_record;
+	}
+
 	function addItem( string _key, string _value) {
 		if (StringUtils.equal(_key,"")) throw;
 		if (StringUtils.equal(_value,"")) throw;

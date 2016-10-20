@@ -31,7 +31,7 @@ contract('Knoledge', function(accounts) {
       assert.equal(array[0], "", "unexpected data returned");
     });
   });
-  it("should get 0x00 address from getRecord with empty registry", function() {
+  it("should get 0x0 address from getRecord with empty registry", function() {
     var knol = Knoledge.deployed();
     return knol.getRecord.call(20).then(function(array){
       console.log("GetRecord: " + array);
@@ -108,5 +108,19 @@ contract('Knoledge', function(accounts) {
       assert.equal(array[0], "item", "unexpected item returned");
       assert.equal(array[1], "value", "unexpected value returned");
     });
-  });  
+  }); 
+  it("should get address from getOwnersRecord", function() {
+    var knol = Knoledge.deployed();
+      return knol.getOwnersRecord.call().then(function(array){
+        console.log("GetOwnerRecord: " + array);
+        assert.equal(array[0], accounts[0] , "unexpected record returned");
+      });
+  }); 
+  it("should return 0x0 getOwnersRecord when there is no record", function() {
+    var knol = Knoledge.deployed();
+      return knol.getOwnersRecord.call({from: accounts[2]}).then(function(array){
+        console.log("GetOwnerRecord: " + array);
+        assert.equal(array[0], 0x0 , "unexpected record returned");
+      });
+  }); 
 });
